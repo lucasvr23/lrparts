@@ -56,6 +56,17 @@ export const modelle = [
   "Evoque",
 ] as const;
 
+/**
+ * Werkstatt: bewusst schmal gehalten. Schwerpunkt ist der Einbau der
+ * großen Baugruppen aus dem eigenen Lager, keine Allround-Werkstatt.
+ */
+export const werkstattLeistungen = [
+  "Motorwechsel inklusive Anbauteilen",
+  "Wechsel von Schalt- und Automatikgetrieben",
+  "Verteilergetriebe, Achsen und Differenziale",
+  "Einbau weiterer Teile aus unserem Lager",
+] as const;
+
 export const teileKategorien = [
   {
     titel: "Motoren & Getriebe",

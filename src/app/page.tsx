@@ -1,7 +1,14 @@
 import Image from "next/image";
 import { Header } from "@/components/Header";
 import { Wordmark } from "@/components/Wordmark";
-import { basePath, bild, modelle, site, teileKategorien } from "@/content/site";
+import {
+  basePath,
+  bild,
+  modelle,
+  site,
+  teileKategorien,
+  werkstattLeistungen,
+} from "@/content/site";
 
 export default function Startseite() {
   return (
@@ -194,32 +201,24 @@ function Bild({ src, alt }: { src: string; alt: string }) {
 /* ---------------------------------------------------------------- Werkstatt */
 
 function Werkstatt() {
-  const leistungen = [
-    "Wartung, Inspektion und Ölservice",
-    "Reparatur von Motor, Getriebe und Antrieb",
-    "Fehlersuche an Elektrik und Elektronik",
-    "Einbau der bei uns gekauften Teile",
-    "Vorbereitung für die Hauptuntersuchung",
-    "Schweiß- und Rostarbeiten am Rahmen",
-  ];
-
   return (
     <Abschnitt id="werkstatt" className="bg-grid bg-forest-950">
       <div className="grid items-center gap-12 lg:grid-cols-2">
         <div>
           <Ueberschrift
             kicker="Werkstatt"
-            titel="Schrauber, die Land Rover kennen"
+            titel="Motor oder Getriebe – wir bauen es ein"
             invers
           />
           <p className="mt-5 text-base leading-relaxed text-mist-200">
-            In unserer Werkstatt kümmern wir uns um genau die Baureihen, für die
-            wir auch die Teile im Regal haben. Das spart Zeit bei der Diagnose
-            und bei der Beschaffung – und Sie bekommen alles aus einer Hand.
+            Unsere Werkstatt hat einen klaren Schwerpunkt: den Wechsel der
+            großen Baugruppen, die bei uns ohnehin im Lager liegen. Sie
+            bekommen Teil und Einbau aus einer Hand und müssen das Fahrzeug
+            nicht noch zu einer zweiten Adresse bringen.
           </p>
 
           <ul className="mt-8 space-y-3">
-            {leistungen.map((l) => (
+            {werkstattLeistungen.map((l) => (
               <li key={l} className="flex gap-3 text-sm text-mist-100">
                 <Haken />
                 {l}
