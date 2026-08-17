@@ -1,26 +1,61 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * Farben direkt aus der Bannergrafik (public/images/logo-banner.webp) entnommen:
+ *   #17614A  Schriftzug "LR PARTS"      -> pine
+ *   #AA9D5D  Schriftzug "WESTERWALD"    -> gold
+ *   #0A3E1A  Verlauf unten              -> forest
+ *   #EAEDEA  Verlauf oben               -> mist
+ */
+@theme {
+  --color-pine-50: #eef6f2;
+  --color-pine-100: #d6e9e0;
+  --color-pine-200: #aed3c2;
+  --color-pine-300: #7bb69e;
+  --color-pine-400: #479377;
+  --color-pine-500: #17614a;
+  --color-pine-600: #135340;
+  --color-pine-700: #104434;
+  --color-pine-800: #0c3628;
+  --color-pine-900: #082a1f;
+
+  --color-forest-500: #147031;
+  --color-forest-700: #0d5223;
+  --color-forest-900: #0a3e1a;
+  --color-forest-950: #062812;
+
+  --color-gold-300: #d3c895;
+  --color-gold-400: #bfb073;
+  --color-gold-500: #aa9d5d;
+  --color-gold-600: #8d8149;
+
+  --color-mist-50: #f7f9f7;
+  --color-mist-100: #eaedea;
+  --color-mist-200: #d8ded8;
+  --color-mist-300: #b9c2b9;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  /* Damit Ankerlinks nicht unter der fixierten Kopfzeile landen. */
+  scroll-padding-top: 5rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-mist-50);
+  color: var(--color-pine-900);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Feine Rasterstruktur für dunkle Abschnitte. */
+.bg-grid {
+  background-image:
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-forest-950) 82%, transparent),
+      color-mix(in srgb, var(--color-forest-950) 96%, transparent)
+    ),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 39.5h40M39.5 0v40' stroke='%23ffffff' stroke-opacity='.05' fill='none'/%3E%3C/svg%3E");
 }

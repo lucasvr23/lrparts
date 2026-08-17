@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LR Parts Westerwald
 
-## Getting Started
+Website voor LR Parts Westerwald — nieuwe & gebruikte Land Rover onderdelen,
+eigen werkplaats en inkoop. Industriepark 40, 56593 Horhausen (DE).
 
-First, run the development server:
+Next.js 16 (App Router) + Tailwind v4, statische export naar GitHub Pages.
+Site-taal is Duits.
+
+## Lokaal draaien
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev          # http://localhost:3000
+npm run build        # statische export naar ./out
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Structuur
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Pad | Wat |
+| --- | --- |
+| `src/app/page.tsx` | de hele homepage (alle secties in één bestand) |
+| `src/content/site.ts` | **bedrijfsgegevens, navigatie, onderdeelcategorieën** — hier aanpassen |
+| `src/components/Header.tsx` | sticky nav + mobiel menu |
+| `src/components/Wordmark.tsx` | het LR PARTS / WESTERWALD logo als tekst |
+| `src/app/globals.css` | kleurtokens, overgenomen uit de bannerafbeelding |
+| `public/images/` | de 11 foto's, met sprekende namen |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Teksten en gegevens staan zo veel mogelijk in `src/content/site.ts`, niet in de
+componenten. Eén plek om te wijzigen.
 
-## Learn More
+## Kleuren
 
-To learn more about Next.js, take a look at the following resources:
+Uit `public/images/logo-banner.webp` gesampled:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Token | Hex | Herkomst |
+| --- | --- | --- |
+| `pine-500` | `#17614A` | letters "LR PARTS" |
+| `gold-500` | `#AA9D5D` | letters "WESTERWALD" |
+| `forest-950` | `#0A3E1A` | onderkant verloop |
+| `mist-100` | `#EAEDEA` | bovenkant verloop |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deploy naar GitHub Pages
 
-## Deploy on Vercel
+`.github/workflows/deploy.yml` bouwt en publiceert bij elke push naar `main`.
+Eenmalig instellen: **Settings → Pages → Source: GitHub Actions**.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+De site komt op `https://lucasvr23.github.io/lrparts/`. Omdat dat een subpad is,
+zet de workflow `NEXT_PUBLIC_BASE_PATH=/lrparts`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> **Let op bij afbeeldingen:** met `images.unoptimized` zet `next/image` de
+> basePath *niet* zelf voor de URL. Gebruik daarom altijd de helper
+> `bild("bestand.webp")` uit `src/content/site.ts` — anders werken de foto's
+> lokaal wel en op Pages niet.
+
+Bij een eigen domein: `CNAME` in `public/` zetten en `NEXT_PUBLIC_BASE_PATH`
+in de workflow leegmaken.
+
+## Klantpreview (noindex)
+
+De workflow zet `NEXT_PUBLIC_NOINDEX=1`. Daardoor krijgt de site:
+
+- `<meta name="robots" content="noindex, nofollow, nocache">`
+- een `robots.txt` met `Disallow: /`
+
+Zo blijft de preview uit Google. De URL zelf blijft wél publiek bereikbaar —
+noindex is geen wachtwoord. Deel de link dus alleen met de klant.
+
+**Bij livegang:** haal `NEXT_PUBLIC_NOINDEX` uit
+`.github/workflows/deploy.yml`. Vergeet je dat, dan wordt de site nooit
+gevonden in Google. Controleren kan met:
+
+```bash
+NEXT_PUBLIC_BASE_PATH=/lrparts npm run build
+grep -c 'name="robots"' out/index.html   # moet 0 zijn
+cat out/robots.txt                        # moet "Allow: /" zijn
+```
+
+## Nog te doen
+
+- [ ] **Impressum + Datenschutzerklärung** — in Duitsland wettelijk verplicht
+      (§5 DDG / DSGVO). Footer linkt er al naar, de pagina's bestaan nog niet.
+- [ ] Openingstijden: staat nu op "nach telefonischer Absprache".
+- [ ] Contactformulier. GitHub Pages kan geen serverroutes, dus een externe
+      dienst (Formspree, Web3Forms) of alleen telefoon/e-mail houden.
+- [ ] Subpagina's per sectie, als de losse secties te vol worden.
+- [ ] Ongebruikte foto's: `defender-110-winter`, `discovery-winter`,
+      `logo-banner`.
